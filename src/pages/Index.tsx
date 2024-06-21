@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { Container, Text, VStack, Button, Box, HStack, Select } from "@chakra-ui/react";
+import React, { useState, useEffect, useCallback } from "react";
+import { Container, Text, VStack, Button, Box, HStack, Select, Input, FormControl, FormLabel, FormErrorMessage, Textarea } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
-const Index = () => {
+const Index = React.memo(() => {
   const [counts, setCounts] = useState({ containerA: 0, containerB: 0, containerC: 0, containerD: 0, containerE: 0 });
   const [history, setHistory] = useState([]);
   const [filter, setFilter] = useState("all");
   const { transcript, resetTranscript } = useSpeechRecognition();
+  const [feedback, setFeedback] = useState("");
+  const [feedbackError, setFeedbackError] = useState("");
 
   useEffect(() => {
     const words = transcript.split(" ");
@@ -70,8 +72,25 @@ const Index = () => {
 
   const filteredHistory = history.filter((entry) => filter === "all" || entry.container === filter);
 
+  const handleFeedbackChange = (e) => {
+    setFeedback(e.target.value);
+    if (e.target.value.length < 10) {
+      setFeedbackError("Feedback must be at least 10 characters long.");
+    } else {
+      setFeedbackError("");
+    }
+  };
+
+  const handleFeedbackSubmit = (e) => {
+    e.preventDefault();
+    if (feedback.length >= 10) {
+      console.log("Feedback submitted:", feedback);
+      setFeedback("");
+    }
+  };
+
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" role="main">
       <VStack spacing={4}>
         <Text fontSize="2xl">Voice-Activated Counting</Text>
         <Button onClick={startListening}>Start Listening</Button>
@@ -94,7 +113,7 @@ const Index = () => {
             <option value="E">Container E</option>
           </Select>
         </HStack>
-        <Box>
+        <Box aria-live="polite">
           <Text fontSize="xl">History</Text>
           {filteredHistory.map((entry, index) => (
             <Text key={index}>
@@ -102,9 +121,19 @@ const Index = () => {
             </Text>
           ))}
         </Box>
+        <Box as="form" onSubmit={handleFeedbackSubmit}>
+          <FormControl isInvalid={feedbackError}>
+            <FormLabel htmlFor="feedback">User Feedback</FormLabel>
+            <Textarea id="feedback" value={feedback} onChange={handleFeedbackChange} />
+            {feedbackError && <FormErrorMessage>{feedbackError}</FormErrorMessage>}
+          </FormControl>
+          <Button mt={4} type="submit" isDisabled={feedbackError}>
+            Submit Feedback
+          </Button>
+        </Box>
       </VStack>
     </Container>
   );
-};
+});
 
 export default Index;
