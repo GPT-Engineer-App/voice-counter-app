@@ -8,8 +8,8 @@ const Navigation = () => {
         <ChakraLink as={Link} to="/" mx={2}>
           Home
         </ChakraLink>
-        <ChakraLink as={Link} to="/about" mx={2}>
-          About
+        <ChakraLink as={Link} to="/history" mx={2}>
+          History
         </ChakraLink>
         <ChakraLink as={Link} to="/contact" mx={2}>
           Contact
