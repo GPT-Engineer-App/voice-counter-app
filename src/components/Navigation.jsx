@@ -14,6 +14,9 @@ const Navigation = () => {
         <ChakraLink as={Link} to="/contact" mx={2}>
           Contact
         </ChakraLink>
+        <ChakraLink as={Link} to="/settings" mx={2}>
+          Settings
+        </ChakraLink>
       </Flex>
     </Box>
   );
