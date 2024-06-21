@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Container, Text, VStack, Button, Box, HStack, Select, Input, FormControl, FormLabel, FormErrorMessage, Textarea } from "@chakra-ui/react";
+import { Container, Text, VStack, Button, Box, HStack, Select, Input, FormControl, FormLabel, FormErrorMessage, Textarea, Checkbox } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 const Index = React.memo(() => {
   const [counts, setCounts] = useState({ containerA: 0, containerB: 0, containerC: 0, containerD: 0, containerE: 0 });
   const [history, setHistory] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [lockedContainers, setLockedContainers] = useState({ containerA: false, containerB: false, containerC: false, containerD: false, containerE: false });
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [feedback, setFeedback] = useState("");
   const [feedbackError, setFeedbackError] = useState("");
@@ -15,19 +16,19 @@ const Index = React.memo(() => {
     let newCounts = { ...counts };
 
     words.forEach((word) => {
-      if (word.toLowerCase() === "containera") {
+      if (word.toLowerCase() === "containera" && !lockedContainers.containerA) {
         newCounts.containerA += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "A", count: newCounts.containerA, timestamp: new Date() }]);
-      } else if (word.toLowerCase() === "containerb") {
+      } else if (word.toLowerCase() === "containerb" && !lockedContainers.containerB) {
         newCounts.containerB += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "B", count: newCounts.containerB, timestamp: new Date() }]);
-      } else if (word.toLowerCase() === "containerc") {
+      } else if (word.toLowerCase() === "containerc" && !lockedContainers.containerC) {
         newCounts.containerC += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "C", count: newCounts.containerC, timestamp: new Date() }]);
-      } else if (word.toLowerCase() === "containerd") {
+      } else if (word.toLowerCase() === "containerd" && !lockedContainers.containerD) {
         newCounts.containerD += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "D", count: newCounts.containerD, timestamp: new Date() }]);
-      } else if (word.toLowerCase() === "containere") {
+      } else if (word.toLowerCase() === "containere" && !lockedContainers.containerE) {
         newCounts.containerE += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "E", count: newCounts.containerE, timestamp: new Date() }]);
       }
@@ -35,7 +36,7 @@ const Index = React.memo(() => {
 
     setCounts(newCounts);
     resetTranscript();
-  }, [transcript]);
+  }, [transcript, lockedContainers]);
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -90,6 +91,13 @@ const Index = React.memo(() => {
     }
   };
 
+  const toggleLock = (container) => {
+    setLockedContainers((prevLockedContainers) => ({
+      ...prevLockedContainers,
+      [container]: !prevLockedContainers[container],
+    }));
+  };
+
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" role="main">
       <VStack spacing={4}>
@@ -131,6 +139,14 @@ const Index = React.memo(() => {
           <Button mt={4} type="submit" isDisabled={feedbackError}>
             Submit Feedback
           </Button>
+        </Box>
+        <Box>
+          <Text fontSize="xl">Lock Containers</Text>
+          <Checkbox isChecked={lockedContainers.containerA} onChange={() => toggleLock("containerA")}>Lock Container A</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerB} onChange={() => toggleLock("containerB")}>Lock Container B</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerC} onChange={() => toggleLock("containerC")}>Lock Container C</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerD} onChange={() => toggleLock("containerD")}>Lock Container D</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerE} onChange={() => toggleLock("containerE")}>Lock Container E</Checkbox>
         </Box>
       </VStack>
     </Container>
