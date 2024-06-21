@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Container, Text, VStack, Button, Box, HStack, Select, Input, FormControl, FormLabel, FormErrorMessage, Textarea, Checkbox, useToast } from "@chakra-ui/react";
+import { Container, Text, VStack, Button, Box, HStack, Select, useToast } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 const saveToLocalStorage = (key, value) => {
@@ -19,8 +19,6 @@ const Index = React.memo(() => {
   const [lockedContainers, setLockedContainers] = useState({ containerA: false, containerB: false, containerC: false, containerD: false, containerE: false });
   const [customKeywords, setCustomKeywords] = useState(loadFromLocalStorage("customKeywords", { containerA: "containera", containerB: "containerb", containerC: "containerc", containerD: "containerd", containerE: "containere" }));
   const { transcript, resetTranscript } = useSpeechRecognition();
-  const [feedback, setFeedback] = useState("");
-  const [feedbackError, setFeedbackError] = useState("");
 
   useEffect(() => {
     const words = transcript.split(" ");
@@ -151,23 +149,6 @@ const Index = React.memo(() => {
 
   const filteredHistory = history.filter((entry) => filter === "all" || entry.container === filter);
 
-  const handleFeedbackChange = (e) => {
-    setFeedback(e.target.value);
-    if (e.target.value.length < 10) {
-      setFeedbackError("Feedback must be at least 10 characters long.");
-    } else {
-      setFeedbackError("");
-    }
-  };
-
-  const handleFeedbackSubmit = (e) => {
-    e.preventDefault();
-    if (feedback.length >= 10) {
-      console.log("Feedback submitted:", feedback);
-      setFeedback("");
-    }
-  };
-
   const toggleLock = (container) => {
     setLockedContainers((prevLockedContainers) => ({
       ...prevLockedContainers,
@@ -213,16 +194,6 @@ const Index = React.memo(() => {
               Container {entry.container} Count: {entry.count} at {entry.timestamp.toLocaleTimeString()}
             </Text>
           ))}
-        </Box>
-        <Box as="form" onSubmit={handleFeedbackSubmit} width="100%" px={4}>
-          <FormControl isInvalid={feedbackError}>
-            <FormLabel htmlFor="feedback">User Feedback</FormLabel>
-            <Textarea id="feedback" value={feedback} onChange={handleFeedbackChange} />
-            {feedbackError && <FormErrorMessage>{feedbackError}</FormErrorMessage>}
-          </FormControl>
-          <Button mt={4} type="submit" isDisabled={feedbackError}>
-            Submit Feedback
-          </Button>
         </Box>
         <Box width="100%" px={4}>
           <Text fontSize="xl">Lock Containers</Text>
