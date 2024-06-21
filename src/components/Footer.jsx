@@ -1,4 +1,3 @@
-# Footer component to display the footer section of the application
 const Footer = () => {
   // Return the JSX for the footer
   return (
