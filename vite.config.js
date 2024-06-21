@@ -1,21 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import { babel } from '@rollup/plugin-babel';
 
 export default defineConfig({
-  plugins: [react()],
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, 'src'),
-    },
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        globals: {
-          'regenerator-runtime': 'regeneratorRuntime',
-        },
-      },
-    },
-  }
+  plugins: [
+    react(),
+    babel({
+      babelHelpers: 'runtime',
+      plugins: ['@babel/plugin-transform-runtime'],
+    }),
+  ],
 });
