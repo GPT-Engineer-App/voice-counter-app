@@ -1,12 +1,9 @@
 const Footer = () => {
-  // Return the JSX for the footer
   return (
-    // Tailwind CSS classes for styling the footer
-    <footer className="bg-gray-800 text-white py-4 mt-auto" role="contentinfo">
-      {/* Display the current year and application name */}
+    <footer className="bg-white shadow p-4 mt-auto">
       <p className="text-center">© {new Date().getFullYear()} My Application. All rights reserved.</p>
     </footer>
   );
 };
 
-export default Footer; // Export the Footer component as the default export
+export default Footer;
