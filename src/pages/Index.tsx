@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Container, Text, VStack, Button, Box, HStack, Select, Input, FormControl, FormLabel, FormErrorMessage, Textarea, Checkbox, useToast } from "@chakra-ui/react";
+import { Container, Text, VStack, Button, Box, HStack, Select, Checkbox, useToast } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 const saveToLocalStorage = (key, value) => {
@@ -19,8 +19,6 @@ const Index = React.memo(() => {
   const [lockedContainers, setLockedContainers] = useState({ containerA: false, containerB: false, containerC: false, containerD: false, containerE: false });
   const [customKeywords, setCustomKeywords] = useState(loadFromLocalStorage("customKeywords", { containerA: "containera", containerB: "containerb", containerC: "containerc", containerD: "containerd", containerE: "containere" }));
   const { transcript, resetTranscript } = useSpeechRecognition();
-  const [feedback, setFeedback] = useState("");
-  const [feedbackError, setFeedbackError] = useState("");
 
   useEffect(() => {
     const words = transcript.split(" ");
@@ -151,34 +149,10 @@ const Index = React.memo(() => {
 
   const filteredHistory = history.filter((entry) => filter === "all" || entry.container === filter);
 
-  const handleFeedbackChange = (e) => {
-    setFeedback(e.target.value);
-    if (e.target.value.length < 10) {
-      setFeedbackError("Feedback must be at least 10 characters long.");
-    } else {
-      setFeedbackError("");
-    }
-  };
-
-  const handleFeedbackSubmit = (e) => {
-    e.preventDefault();
-    if (feedback.length >= 10) {
-      console.log("Feedback submitted:", feedback);
-      setFeedback("");
-    }
-  };
-
   const toggleLock = (container) => {
     setLockedContainers((prevLockedContainers) => ({
       ...prevLockedContainers,
       [container]: !prevLockedContainers[container],
-    }));
-  };
-
-  const handleKeywordChange = (container, keyword) => {
-    setCustomKeywords((prevKeywords) => ({
-      ...prevKeywords,
-      [container]: keyword,
     }));
   };
 
@@ -214,16 +188,6 @@ const Index = React.memo(() => {
             </Text>
           ))}
         </Box>
-        <Box as="form" onSubmit={handleFeedbackSubmit} width="100%" px={4}>
-          <FormControl isInvalid={feedbackError}>
-            <FormLabel htmlFor="feedback">User Feedback</FormLabel>
-            <Textarea id="feedback" value={feedback} onChange={handleFeedbackChange} />
-            {feedbackError && <FormErrorMessage>{feedbackError}</FormErrorMessage>}
-          </FormControl>
-          <Button mt={4} type="submit" isDisabled={feedbackError}>
-            Submit Feedback
-          </Button>
-        </Box>
         <Box width="100%" px={4}>
           <Text fontSize="xl">Lock Containers</Text>
           <Checkbox isChecked={lockedContainers.containerA} onChange={() => toggleLock("containerA")}>Lock Container A</Checkbox>
@@ -231,29 +195,6 @@ const Index = React.memo(() => {
           <Checkbox isChecked={lockedContainers.containerC} onChange={() => toggleLock("containerC")}>Lock Container C</Checkbox>
           <Checkbox isChecked={lockedContainers.containerD} onChange={() => toggleLock("containerD")}>Lock Container D</Checkbox>
           <Checkbox isChecked={lockedContainers.containerE} onChange={() => toggleLock("containerE")}>Lock Container E</Checkbox>
-        </Box>
-        <Box width="100%" px={4}>
-          <Text fontSize="xl">Custom Keywords</Text>
-          <FormControl>
-            <FormLabel htmlFor="keywordA">Keyword for Container A</FormLabel>
-            <Input id="keywordA" value={customKeywords.containerA} onChange={(e) => handleKeywordChange("containerA", e.target.value)} />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="keywordB">Keyword for Container B</FormLabel>
-            <Input id="keywordB" value={customKeywords.containerB} onChange={(e) => handleKeywordChange("containerB", e.target.value)} />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="keywordC">Keyword for Container C</FormLabel>
-            <Input id="keywordC" value={customKeywords.containerC} onChange={(e) => handleKeywordChange("containerC", e.target.value)} />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="keywordD">Keyword for Container D</FormLabel>
-            <Input id="keywordD" value={customKeywords.containerD} onChange={(e) => handleKeywordChange("containerD", e.target.value)} />
-          </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="keywordE">Keyword for Container E</FormLabel>
-            <Input id="keywordE" value={customKeywords.containerE} onChange={(e) => handleKeywordChange("containerE", e.target.value)} />
-          </FormControl>
         </Box>
       </VStack>
     </Container>
