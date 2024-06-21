@@ -10,12 +10,14 @@ const Settings = () => {
     containerE: "containere",
   };
 
-  const [customKeywords, setCustomKeywords] = useState(defaultKeywords);
+  const [customKeywords, setCustomKeywords] = useState(() => {
+    const storedKeywords = JSON.parse(localStorage.getItem("customKeywords"));
+    return storedKeywords || defaultKeywords;
+  });
 
   useEffect(() => {
-    const storedKeywords = JSON.parse(localStorage.getItem("customKeywords")) || defaultKeywords;
-    setCustomKeywords(storedKeywords);
-  }, []);
+    localStorage.setItem("customKeywords", JSON.stringify(customKeywords));
+  }, [customKeywords]);
 
   useEffect(() => {
     localStorage.setItem("customKeywords", JSON.stringify(customKeywords));
@@ -42,23 +44,23 @@ const Settings = () => {
       <VStack spacing={{ base: 4, md: 6 }} align="stretch">
         <Box>
           <FormControl>
-            <FormLabel htmlFor="keywordA">Keyword for Container A</FormLabel>
+            <FormLabel htmlFor="keywordA">Keyword for {customKeywords.containerA}</FormLabel>
             <Input id="keywordA" value={customKeywords.containerA} onChange={(e) => handleKeywordChange("containerA", e.target.value)} />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="keywordB">Keyword for Container B</FormLabel>
+            <FormLabel htmlFor="keywordB">Keyword for {customKeywords.containerB}</FormLabel>
             <Input id="keywordB" value={customKeywords.containerB} onChange={(e) => handleKeywordChange("containerB", e.target.value)} />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="keywordC">Keyword for Container C</FormLabel>
+            <FormLabel htmlFor="keywordC">Keyword for {customKeywords.containerC}</FormLabel>
             <Input id="keywordC" value={customKeywords.containerC} onChange={(e) => handleKeywordChange("containerC", e.target.value)} />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="keywordD">Keyword for Container D</FormLabel>
+            <FormLabel htmlFor="keywordD">Keyword for {customKeywords.containerD}</FormLabel>
             <Input id="keywordD" value={customKeywords.containerD} onChange={(e) => handleKeywordChange("containerD", e.target.value)} />
           </FormControl>
           <FormControl>
-            <FormLabel htmlFor="keywordE">Keyword for Container E</FormLabel>
+            <FormLabel htmlFor="keywordE">Keyword for {customKeywords.containerE}</FormLabel>
             <Input id="keywordE" value={customKeywords.containerE} onChange={(e) => handleKeywordChange("containerE", e.target.value)} />
           </FormControl>
         </Box>
