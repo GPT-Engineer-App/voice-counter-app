@@ -1,4 +1,3 @@
-import { Container, Heading, Text, Box, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 
 const History = () => {
@@ -20,22 +19,32 @@ const History = () => {
   };
 
   return (
-    <Container maxW="container.md" py={8} role="main" px={4}>
-      <Heading as="h2" size="xl" mb={4}>History</Heading>
-      <Box>
-        {history.length === 0 ? (
-          <Text>No history available.</Text>
-        ) : (
-          history.map((entry, index) => (
-            <Text key={index}>
-              Custom Container {entry.container} Custom Count: {entry.count} at {new Date(entry.timestamp).toLocaleTimeString()}
-            </Text>
-          ))
-        )}
-      </Box>
-      <Button mt={4} onClick={exportData}>Export Data</Button>
-    </Container>
+    <div className="container mx-auto py-8 px-4" role="main">
+      <h2 className="text-2xl font-bold mb-4">History</h2>
+      <HistoryList history={history} />
+      <ExportButton onClick={exportData} />
+    </div>
   );
 };
+
+const HistoryList = ({ history }) => (
+  <div>
+    {history.length === 0 ? (
+      <p>No history available.</p>
+    ) : (
+      history.map((entry, index) => (
+        <p key={index}>
+          Custom Container {entry.container} Custom Count: {entry.count} at {new Date(entry.timestamp).toLocaleTimeString()}
+        </p>
+      ))
+    )}
+  </div>
+);
+
+const ExportButton = ({ onClick }) => (
+  <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded" onClick={onClick}>
+    Export Data
+  </button>
+);
 
 export default History;
