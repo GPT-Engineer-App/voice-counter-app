@@ -2,13 +2,22 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Container, Text, VStack, Button, Box, HStack, Select, Input, FormControl, FormLabel, FormErrorMessage, Textarea, Checkbox, useToast } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
+const saveToLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+const loadFromLocalStorage = (key, defaultValue) => {
+  const storedValue = localStorage.getItem(key);
+  return storedValue ? JSON.parse(storedValue) : defaultValue;
+};
+
 const Index = React.memo(() => {
   const toast = useToast();
-  const [counts, setCounts] = useState({ containerA: 0, containerB: 0, containerC: 0, containerD: 0, containerE: 0 });
-  const [history, setHistory] = useState([]);
+  const [counts, setCounts] = useState(loadFromLocalStorage("counts", { containerA: 0, containerB: 0, containerC: 0, containerD: 0, containerE: 0 }));
+  const [history, setHistory] = useState(loadFromLocalStorage("history", []));
   const [filter, setFilter] = useState("all");
   const [lockedContainers, setLockedContainers] = useState({ containerA: false, containerB: false, containerC: false, containerD: false, containerE: false });
-  const [customKeywords, setCustomKeywords] = useState({ containerA: "containera", containerB: "containerb", containerC: "containerc", containerD: "containerd", containerE: "containere" });
+  const [customKeywords, setCustomKeywords] = useState(loadFromLocalStorage("customKeywords", { containerA: "containera", containerB: "containerb", containerC: "containerc", containerD: "containerd", containerE: "containere" }));
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [feedback, setFeedback] = useState("");
   const [feedbackError, setFeedbackError] = useState("");
@@ -74,6 +83,18 @@ const Index = React.memo(() => {
     setCounts(newCounts);
     resetTranscript();
   }, [transcript, lockedContainers, customKeywords, toast]);
+
+  useEffect(() => {
+    saveToLocalStorage("counts", counts);
+  }, [counts]);
+
+  useEffect(() => {
+    saveToLocalStorage("customKeywords", customKeywords);
+  }, [customKeywords]);
+
+  useEffect(() => {
+    saveToLocalStorage("history", history);
+  }, [history]);
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return <span>Browser doesn't support speech recognition.</span>;
