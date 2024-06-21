@@ -36,7 +36,7 @@ const LockScreen = () => {
   }, []);
 
   return (
-    <Box height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bg="gray.800" color="white">
+    <Box height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bg="gray.800" color="white" px={4}>
       <VStack spacing={4}>
         <Text fontSize="2xl">Lock Screen Display</Text>
         <Box>

@@ -23,10 +23,10 @@ const Contact = () => {
   };
 
   return (
-    <Container maxW="container.md" py={8} role="main">
+    <Container maxW="container.md" py={8} role="main" px={4}>
       <Heading as="h2" size="xl" mb={4}>Contact Us</Heading>
       <Text fontSize="lg">This is the contact page of the application.</Text>
-      <Box as="form" onSubmit={handleSubmit} mt={4}>
+      <Box as="form" onSubmit={handleSubmit} mt={4} width="100%" px={4}>
         <FormControl isInvalid={emailError}>
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input id="email" type="email" value={email} onChange={handleEmailChange} />

@@ -162,8 +162,8 @@ const Index = React.memo(() => {
   };
 
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" role="main">
-      <VStack spacing={4}>
+    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" role="main" px={4}>
+      <VStack spacing={{ base: 4, md: 6 }}>
         <Text fontSize="2xl">Voice-Activated Counting</Text>
         <Button onClick={startListening}>Start Listening</Button>
         <Button onClick={stopListening}>Stop Listening</Button>
@@ -185,7 +185,7 @@ const Index = React.memo(() => {
             <option value="E">Container E</option>
           </Select>
         </HStack>
-        <Box aria-live="polite">
+        <Box aria-live="polite" width="100%" px={4}>
           <Text fontSize="xl">History</Text>
           {filteredHistory.map((entry, index) => (
             <Text key={index}>
@@ -193,7 +193,7 @@ const Index = React.memo(() => {
             </Text>
           ))}
         </Box>
-        <Box as="form" onSubmit={handleFeedbackSubmit}>
+        <Box as="form" onSubmit={handleFeedbackSubmit} width="100%" px={4}>
           <FormControl isInvalid={feedbackError}>
             <FormLabel htmlFor="feedback">User Feedback</FormLabel>
             <Textarea id="feedback" value={feedback} onChange={handleFeedbackChange} />
@@ -203,7 +203,7 @@ const Index = React.memo(() => {
             Submit Feedback
           </Button>
         </Box>
-        <Box>
+        <Box width="100%" px={4}>
           <Text fontSize="xl">Lock Containers</Text>
           <Checkbox isChecked={lockedContainers.containerA} onChange={() => toggleLock("containerA")}>Lock Container A</Checkbox>
           <Checkbox isChecked={lockedContainers.containerB} onChange={() => toggleLock("containerB")}>Lock Container B</Checkbox>
@@ -211,7 +211,7 @@ const Index = React.memo(() => {
           <Checkbox isChecked={lockedContainers.containerD} onChange={() => toggleLock("containerD")}>Lock Container D</Checkbox>
           <Checkbox isChecked={lockedContainers.containerE} onChange={() => toggleLock("containerE")}>Lock Container E</Checkbox>
         </Box>
-        <Box>
+        <Box width="100%" px={4}>
           <Text fontSize="xl">Custom Keywords</Text>
           <FormControl>
             <FormLabel htmlFor="keywordA">Keyword for Container A</FormLabel>
