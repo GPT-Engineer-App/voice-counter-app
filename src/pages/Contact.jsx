@@ -1,4 +1,4 @@
-import { Container, Heading, Text, FormControl, FormLabel, Input, FormErrorMessage, Button, Box } from "@chakra-ui/react";
+import { Container, Heading, Text, FormControl, FormLabel, Input, FormErrorMessage, Button, Box, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
 
 const Contact = () => {
@@ -14,11 +14,25 @@ const Contact = () => {
     }
   };
 
+  const [feedback, setFeedback] = useState("");
+  const [feedbackError, setFeedbackError] = useState("");
+
+  const handleFeedbackChange = (e) => {
+    setFeedback(e.target.value);
+    if (e.target.value.length < 10) {
+      setFeedbackError("Feedback must be at least 10 characters long.");
+    } else {
+      setFeedbackError("");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!emailError) {
+    if (!emailError && feedback.length >= 10) {
       console.log("Email submitted:", email);
+      console.log("Feedback submitted:", feedback);
       setEmail("");
+      setFeedback("");
     }
   };
 
@@ -32,7 +46,12 @@ const Contact = () => {
           <Input id="email" type="email" value={email} onChange={handleEmailChange} />
           {emailError && <FormErrorMessage>{emailError}</FormErrorMessage>}
         </FormControl>
-        <Button mt={4} type="submit" isDisabled={emailError}>
+        <FormControl isInvalid={feedbackError} mt={4}>
+          <FormLabel htmlFor="feedback">User Feedback</FormLabel>
+          <Textarea id="feedback" value={feedback} onChange={handleFeedbackChange} />
+          {feedbackError && <FormErrorMessage>{feedbackError}</FormErrorMessage>}
+        </FormControl>
+        <Button mt={4} type="submit" isDisabled={emailError || feedbackError}>
           Submit
         </Button>
       </Box>
