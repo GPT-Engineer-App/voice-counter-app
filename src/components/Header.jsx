@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const Header = () => {
   return (
@@ -13,6 +14,7 @@ const Header = () => {
           <Link to="/contact" className="mx-2">Contact</Link>
           <Link to="/settings" className="mx-2">Settings</Link>
         </nav>
+      <ThemeSwitcher />
       </div>
     </header>
   );

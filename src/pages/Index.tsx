@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Button, Select, Checkbox, useToast } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import debounce from "lodash.debounce";
+import ThemeSwitcher from "../components/ThemeSwitcher";
 
 // Utility functions
 const saveToLocalStorage = (key, value) => {
@@ -180,6 +181,7 @@ const Index = React.memo(() => {
         </div>
         <HistoryDisplay filteredHistory={filteredHistory} />
         <LockControls customKeywords={customKeywords} lockedContainers={lockedContainers} toggleLock={toggleLock} />
+        <ThemeSwitcher />
       </div>
     </div>
   );

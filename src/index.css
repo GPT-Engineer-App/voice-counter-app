@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-# Ensure the html, body, and root elements take up the full height of the viewport
 html, body, #root {
   height: 100%;
   margin: 0;
@@ -10,7 +9,6 @@ html, body, #root {
   font-family: 'Inter', sans-serif;
 }
 
-# Set the body to use flexbox layout and arrange children in a column
 body {
   display: flex;
   flex-direction: column;
