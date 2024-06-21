@@ -1,15 +1,14 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <Box as="header" bg="brand.800" color="white" py={4}>
-      <Flex justify="space-between" align="center" maxW="container.lg" mx="auto" px={4}>
-        <Heading as="h1" size="lg">
+    <header className="bg-brand-800 text-white py-4">
+      <div className="container mx-auto flex justify-between items-center px-4">
+        <h1 className="text-lg">
           <Link to="/">My Application</Link>
-        </Heading>
-      </Flex>
-    </Box>
+        </h1>
+      </div>
+    </header>
   );
 };
 

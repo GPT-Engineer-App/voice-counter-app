@@ -1,24 +1,26 @@
-import { Box, Flex, Link as ChakraLink } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const Navigation = () => {
   return (
-    <Box as="nav" bg="brand.700" color="white" py={2}>
-      <Flex justify="center" maxW="container.lg" mx="auto" px={4}>
-        <ChakraLink as={Link} to="/" mx={2}>
+    // Navigation container with background color and padding
+    <nav className="bg-brand-700 text-white py-2">
+      {/* Flex container to center the navigation links */}
+      <div className="flex justify-center max-w-screen-lg mx-auto px-4">
+        {/* Navigation links with margin for spacing */}
+        <Link to="/" className="mx-2">
           Home
-        </ChakraLink>
-        <ChakraLink as={Link} to="/history" mx={2}>
+        </Link>
+        <Link to="/history" className="mx-2">
           History
-        </ChakraLink>
-        <ChakraLink as={Link} to="/contact" mx={2}>
+        </Link>
+        <Link to="/contact" className="mx-2">
           Contact
-        </ChakraLink>
-        <ChakraLink as={Link} to="/settings" mx={2}>
+        </Link>
+        <Link to="/settings" className="mx-2">
           Settings
-        </ChakraLink>
-      </Flex>
-    </Box>
+        </Link>
+      </div>
+    </nav>
   );
 };
 

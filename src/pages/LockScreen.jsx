@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text, VStack } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import debounce from 'lodash.debounce';
 
@@ -13,9 +12,8 @@ const customKeywords = {
 
 const confidenceThreshold = 0.8;
 
-const LockScreen = () => {
-  const [counts, setCounts] = useState({ containerA: 0, containerB: 0, containerC: 0, containerD: 0, containerE: 0 });
-  const { transcript, resetTranscript, finalTranscript, listening, browserSupportsSpeechRecognition } = useSpeechRecognition();
+const useSpeechProcessor = (counts, setCounts) => {
+  const { finalTranscript, resetTranscript } = useSpeechRecognition();
 
   const processTranscript = debounce(() => {
     const words = finalTranscript.split(" ");
@@ -43,7 +41,13 @@ const LockScreen = () => {
     if (finalTranscript && finalTranscript.length > 0) {
       processTranscript();
     }
-  }, [finalTranscript]);
+  }, [finalTranscript, processTranscript]);
+
+  return { processTranscript };
+};
+
+const useSpeechRecognitionSetup = () => {
+  const { browserSupportsSpeechRecognition } = useSpeechRecognition();
 
   useEffect(() => {
     SpeechRecognition.startListening({ continuous: true });
@@ -52,23 +56,36 @@ const LockScreen = () => {
     };
   }, []);
 
+  return { browserSupportsSpeechRecognition };
+};
+
+const CountDisplay = ({ counts }) => (
+  <div>
+    <p>{customKeywords.containerA} Count: {counts.containerA}</p>
+    <p>{customKeywords.containerB} Count: {counts.containerB}</p>
+    <p>{customKeywords.containerC} Count: {counts.containerC}</p>
+    <p>{customKeywords.containerD} Count: {counts.containerD}</p>
+    <p>{customKeywords.containerE} Count: {counts.containerE}</p>
+  </div>
+);
+
+const LockScreen = () => {
+  const [counts, setCounts] = useState({ containerA: 0, containerB: 0, containerC: 0, containerD: 0, containerE: 0 });
+
+  useSpeechProcessor(counts, setCounts);
+  const { browserSupportsSpeechRecognition } = useSpeechRecognitionSetup();
+
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
   return (
-    <Box height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bg="gray.800" color="white" px={4}>
-      <VStack spacing={4}>
-        <Text fontSize="2xl">Lock Screen Display</Text>
-        <Box>
-          <Text>{customKeywords.containerA} Count: {counts.containerA}</Text>
-          <Text>{customKeywords.containerB} Count: {counts.containerB}</Text>
-          <Text>{customKeywords.containerC} Count: {counts.containerC}</Text>
-          <Text>{customKeywords.containerD} Count: {counts.containerD}</Text>
-          <Text>{customKeywords.containerE} Count: {counts.containerE}</Text>
-        </Box>
-      </VStack>
-    </Box>
+    <div className="h-screen flex flex-col justify-center items-center bg-gray-800 text-white px-4">
+      <div className="space-y-4">
+        <p className="text-2xl">Lock Screen Display</p>
+        <CountDisplay counts={counts} />
+      </div>
+    </div>
   );
 };
 
