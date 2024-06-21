@@ -4,11 +4,11 @@ import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognitio
 import debounce from 'lodash.debounce';
 
 const customKeywords = {
-  containerA: "Alpha",
-  containerB: "Bravo",
-  containerC: "Charlie",
-  containerD: "Delta",
-  containerE: "Echo"
+  containerA: "CAN",
+  containerB: "GLASS",
+  containerC: "CART",
+  containerD: "PET",
+  containerE: "HDP"
 };
 
 const confidenceThreshold = 0.8;
