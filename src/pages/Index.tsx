@@ -48,6 +48,7 @@ const Index = React.memo(() => {
     try {
       const response = await fetch("https://example.com/api/data", {
         mode: "cors",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
