@@ -3,7 +3,7 @@ import { Container, Text, VStack, Button, Box, HStack, Select } from "@chakra-ui
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 const Index = () => {
-  const [counts, setCounts] = useState({ containerA: 0, containerB: 0 });
+  const [counts, setCounts] = useState({ containerA: 0, containerB: 0, containerC: 0, containerD: 0, containerE: 0 });
   const [history, setHistory] = useState([]);
   const [filter, setFilter] = useState("all");
   const { transcript, resetTranscript } = useSpeechRecognition();
@@ -19,6 +19,15 @@ const Index = () => {
       } else if (word.toLowerCase() === "containerb") {
         newCounts.containerB += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "B", count: newCounts.containerB, timestamp: new Date() }]);
+      } else if (word.toLowerCase() === "containerc") {
+        newCounts.containerC += 1;
+        setHistory((prevHistory) => [...prevHistory, { container: "C", count: newCounts.containerC, timestamp: new Date() }]);
+      } else if (word.toLowerCase() === "containerd") {
+        newCounts.containerD += 1;
+        setHistory((prevHistory) => [...prevHistory, { container: "D", count: newCounts.containerD, timestamp: new Date() }]);
+      } else if (word.toLowerCase() === "containere") {
+        newCounts.containerE += 1;
+        setHistory((prevHistory) => [...prevHistory, { container: "E", count: newCounts.containerE, timestamp: new Date() }]);
       }
     });
 
@@ -70,6 +79,9 @@ const Index = () => {
         <Box>
           <Text>Container A Count: {counts.containerA}</Text>
           <Text>Container B Count: {counts.containerB}</Text>
+          <Text>Container C Count: {counts.containerC}</Text>
+          <Text>Container D Count: {counts.containerD}</Text>
+          <Text>Container E Count: {counts.containerE}</Text>
         </Box>
         <HStack spacing={4}>
           <Button onClick={clearHistory}>Clear History</Button>
@@ -77,6 +89,9 @@ const Index = () => {
             <option value="all">All</option>
             <option value="A">Container A</option>
             <option value="B">Container B</option>
+            <option value="C">Container C</option>
+            <option value="D">Container D</option>
+            <option value="E">Container E</option>
           </Select>
         </HStack>
         <Box>
