@@ -163,11 +163,11 @@ const Index = React.memo(() => {
         <Button onClick={startListening}>Start Listening</Button>
         <Button onClick={stopListening}>Stop Listening</Button>
         <Box>
-          <Text>Container A Count: {counts.containerA}</Text>
-          <Text>Container B Count: {counts.containerB}</Text>
-          <Text>Container C Count: {counts.containerC}</Text>
-          <Text>Container D Count: {counts.containerD}</Text>
-          <Text>Container E Count: {counts.containerE}</Text>
+          <Text>{customKeywords.containerA} Count: {counts.containerA}</Text>
+          <Text>{customKeywords.containerB} Count: {counts.containerB}</Text>
+          <Text>{customKeywords.containerC} Count: {counts.containerC}</Text>
+          <Text>{customKeywords.containerD} Count: {counts.containerD}</Text>
+          <Text>{customKeywords.containerE} Count: {counts.containerE}</Text>
         </Box>
         <HStack spacing={4}>
           <Button onClick={clearHistory}>Clear History</Button>

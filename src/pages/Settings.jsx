@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Container, Heading, VStack, FormControl, FormLabel, Input, Checkbox, Box } from "@chakra-ui/react";
+import { Container, Heading, VStack, FormControl, FormLabel, Input, Box, Button } from "@chakra-ui/react";
 
 const Settings = () => {
-  const [customKeywords, setCustomKeywords] = useState({
+  const defaultKeywords = {
     containerA: "containera",
     containerB: "containerb",
     containerC: "containerc",
     containerD: "containerd",
     containerE: "containere",
-  });
+  };
+
+  const [customKeywords, setCustomKeywords] = useState(defaultKeywords);
 
   useEffect(() => {
-    const storedKeywords = JSON.parse(localStorage.getItem("customKeywords")) || customKeywords;
+    const storedKeywords = JSON.parse(localStorage.getItem("customKeywords")) || defaultKeywords;
     setCustomKeywords(storedKeywords);
   }, []);
 
@@ -24,6 +26,14 @@ const Settings = () => {
       ...prevKeywords,
       [container]: keyword,
     }));
+  };
+
+  const handleReset = () => {
+    setCustomKeywords(defaultKeywords);
+  };
+
+  const handleSave = () => {
+    localStorage.setItem("customKeywords", JSON.stringify(customKeywords));
   };
 
   return (
@@ -52,6 +62,8 @@ const Settings = () => {
             <Input id="keywordE" value={customKeywords.containerE} onChange={(e) => handleKeywordChange("containerE", e.target.value)} />
           </FormControl>
         </Box>
+        <Button mt={4} onClick={handleReset}>Reset to Default</Button>
+        <Button mt={4} onClick={handleSave}>Save Keywords</Button>
       </VStack>
     </Container>
   );
