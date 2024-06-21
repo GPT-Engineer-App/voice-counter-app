@@ -1,6 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Index from "./pages/Index";
-import About from "./pages/About";
+import History from "./pages/History";
 import Contact from "./pages/Contact";
 import LockScreen from "./pages/LockScreen";
 import Settings from "./pages/Settings";
@@ -15,7 +15,7 @@ function App() {
       <Navigation />
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/history" element={<History />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/lockscreen" element={<LockScreen />} />
         <Route path="/settings" element={<Settings />} />
