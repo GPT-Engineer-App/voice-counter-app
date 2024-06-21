@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Container, Text, VStack, Button, Box, HStack, Select, Checkbox, useToast } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import debounce from "lodash.debounce";
 
 const saveToLocalStorage = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
@@ -18,69 +19,80 @@ const Index = React.memo(() => {
   const [filter, setFilter] = useState("all");
   const [lockedContainers, setLockedContainers] = useState({ containerA: false, containerB: false, containerC: false, containerD: false, containerE: false });
   const [customKeywords, setCustomKeywords] = useState(loadFromLocalStorage("customKeywords", { containerA: "containera", containerB: "containerb", containerC: "containerc", containerD: "containerd", containerE: "containere" }));
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  const { transcript, resetTranscript, finalTranscript, listening } = useSpeechRecognition();
+
+  const confidenceThreshold = 0.8;
+
+  const processTranscript = useCallback(
+    debounce((transcript) => {
+      const words = transcript.split(" ");
+      let newCounts = { ...counts };
+
+      words.forEach((word) => {
+        if (word.toLowerCase() === customKeywords.containerA.toLowerCase() && !lockedContainers.containerA) {
+          newCounts.containerA += 1;
+          setHistory((prevHistory) => [...prevHistory, { container: customKeywords.containerA, count: newCounts.containerA, timestamp: new Date() }]);
+          toast({
+            title: "Word Recognized",
+            description: `${customKeywords.containerA} recognized the word: ${customKeywords.containerA}`,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else if (word.toLowerCase() === customKeywords.containerB.toLowerCase() && !lockedContainers.containerB) {
+          newCounts.containerB += 1;
+          setHistory((prevHistory) => [...prevHistory, { container: customKeywords.containerB, count: newCounts.containerB, timestamp: new Date() }]);
+          toast({
+            title: "Word Recognized",
+            description: `${customKeywords.containerB} recognized the word: ${customKeywords.containerB}`,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else if (word.toLowerCase() === customKeywords.containerC.toLowerCase() && !lockedContainers.containerC) {
+          newCounts.containerC += 1;
+          setHistory((prevHistory) => [...prevHistory, { container: customKeywords.containerC, count: newCounts.containerC, timestamp: new Date() }]);
+          toast({
+            title: "Word Recognized",
+            description: `${customKeywords.containerC} recognized the word: ${customKeywords.containerC}`,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else if (word.toLowerCase() === customKeywords.containerD.toLowerCase() && !lockedContainers.containerD) {
+          newCounts.containerD += 1;
+          setHistory((prevHistory) => [...prevHistory, { container: customKeywords.containerD, count: newCounts.containerD, timestamp: new Date() }]);
+          toast({
+            title: "Word Recognized",
+            description: `${customKeywords.containerD} recognized the word: ${customKeywords.containerD}`,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        } else if (word.toLowerCase() === customKeywords.containerE.toLowerCase() && !lockedContainers.containerE) {
+          newCounts.containerE += 1;
+          setHistory((prevHistory) => [...prevHistory, { container: customKeywords.containerE, count: newCounts.containerE, timestamp: new Date() }]);
+          toast({
+            title: "Word Recognized",
+            description: `${customKeywords.containerE} recognized the word: ${customKeywords.containerE}`,
+            status: "success",
+            duration: 3000,
+            isClosable: true,
+          });
+        }
+      });
+
+      setCounts(newCounts);
+      resetTranscript();
+    }, 500),
+    [counts, customKeywords, lockedContainers, toast, resetTranscript]
+  );
 
   useEffect(() => {
-    const words = transcript.split(" ");
-    let newCounts = { ...counts };
-
-    words.forEach((word) => {
-      if (word.toLowerCase() === customKeywords.containerA.toLowerCase() && !lockedContainers.containerA) {
-        newCounts.containerA += 1;
-        setHistory((prevHistory) => [...prevHistory, { container: "A", count: newCounts.containerA, timestamp: new Date() }]);
-        toast({
-          title: "Word Recognized",
-          description: `Container A recognized the word: ${customKeywords.containerA}`,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else if (word.toLowerCase() === customKeywords.containerB.toLowerCase() && !lockedContainers.containerB) {
-        newCounts.containerB += 1;
-        setHistory((prevHistory) => [...prevHistory, { container: "B", count: newCounts.containerB, timestamp: new Date() }]);
-        toast({
-          title: "Word Recognized",
-          description: `Container B recognized the word: ${customKeywords.containerB}`,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else if (word.toLowerCase() === customKeywords.containerC.toLowerCase() && !lockedContainers.containerC) {
-        newCounts.containerC += 1;
-        setHistory((prevHistory) => [...prevHistory, { container: "C", count: newCounts.containerC, timestamp: new Date() }]);
-        toast({
-          title: "Word Recognized",
-          description: `Container C recognized the word: ${customKeywords.containerC}`,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else if (word.toLowerCase() === customKeywords.containerD.toLowerCase() && !lockedContainers.containerD) {
-        newCounts.containerD += 1;
-        setHistory((prevHistory) => [...prevHistory, { container: "D", count: newCounts.containerD, timestamp: new Date() }]);
-        toast({
-          title: "Word Recognized",
-          description: `Container D recognized the word: ${customKeywords.containerD}`,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      } else if (word.toLowerCase() === customKeywords.containerE.toLowerCase() && !lockedContainers.containerE) {
-        newCounts.containerE += 1;
-        setHistory((prevHistory) => [...prevHistory, { container: "E", count: newCounts.containerE, timestamp: new Date() }]);
-        toast({
-          title: "Word Recognized",
-          description: `Container E recognized the word: ${customKeywords.containerE}`,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    });
-
-    setCounts(newCounts);
-    resetTranscript();
-  }, [transcript, lockedContainers, customKeywords, toast]);
+    if (finalTranscript && finalTranscript.confidence >= confidenceThreshold) {
+      processTranscript(finalTranscript.transcript);
+    }
+  }, [finalTranscript, processTranscript]);
 
   useEffect(() => {
     saveToLocalStorage("counts", counts);
@@ -160,8 +172,8 @@ const Index = React.memo(() => {
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" role="main" px={4}>
       <VStack spacing={{ base: 4, md: 6 }}>
         <Text fontSize="2xl">Voice-Activated Counting</Text>
-        <Button onClick={startListening}>Start Listening</Button>
-        <Button onClick={stopListening}>Stop Listening</Button>
+        <Button onClick={startListening} isDisabled={listening}>Start Listening</Button>
+        <Button onClick={stopListening} isDisabled={!listening}>Stop Listening</Button>
         <Box>
           <Text>{customKeywords.containerA} Count: {counts.containerA}</Text>
           <Text>{customKeywords.containerB} Count: {counts.containerB}</Text>
@@ -173,28 +185,28 @@ const Index = React.memo(() => {
           <Button onClick={clearHistory}>Clear History</Button>
           <Select value={filter} onChange={(e) => setFilter(e.target.value)}>
             <option value="all">All</option>
-            <option value="A">Container A</option>
-            <option value="B">Container B</option>
-            <option value="C">Container C</option>
-            <option value="D">Container D</option>
-            <option value="E">Container E</option>
+            <option value={customKeywords.containerA}>{customKeywords.containerA}</option>
+            <option value={customKeywords.containerB}>{customKeywords.containerB}</option>
+            <option value={customKeywords.containerC}>{customKeywords.containerC}</option>
+            <option value={customKeywords.containerD}>{customKeywords.containerD}</option>
+            <option value={customKeywords.containerE}>{customKeywords.containerE}</option>
           </Select>
         </HStack>
         <Box aria-live="polite" width="100%" px={4}>
           <Text fontSize="xl">History</Text>
           {filteredHistory.map((entry, index) => (
             <Text key={index}>
-              Container {entry.container} Count: {entry.count} at {entry.timestamp.toLocaleTimeString()}
+              {entry.container} Count: {entry.count} at {entry.timestamp.toLocaleTimeString()}
             </Text>
           ))}
         </Box>
         <Box width="100%" px={4}>
           <Text fontSize="xl">Lock Containers</Text>
-          <Checkbox isChecked={lockedContainers.containerA} onChange={() => toggleLock("containerA")}>Lock Container A</Checkbox>
-          <Checkbox isChecked={lockedContainers.containerB} onChange={() => toggleLock("containerB")}>Lock Container B</Checkbox>
-          <Checkbox isChecked={lockedContainers.containerC} onChange={() => toggleLock("containerC")}>Lock Container C</Checkbox>
-          <Checkbox isChecked={lockedContainers.containerD} onChange={() => toggleLock("containerD")}>Lock Container D</Checkbox>
-          <Checkbox isChecked={lockedContainers.containerE} onChange={() => toggleLock("containerE")}>Lock Container E</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerA} onChange={() => toggleLock("containerA")}>Lock {customKeywords.containerA}</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerB} onChange={() => toggleLock("containerB")}>Lock {customKeywords.containerB}</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerC} onChange={() => toggleLock("containerC")}>Lock {customKeywords.containerC}</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerD} onChange={() => toggleLock("containerD")}>Lock {customKeywords.containerD}</Checkbox>
+          <Checkbox isChecked={lockedContainers.containerE} onChange={() => toggleLock("containerE")}>Lock {customKeywords.containerE}</Checkbox>
         </Box>
       </VStack>
     </Container>

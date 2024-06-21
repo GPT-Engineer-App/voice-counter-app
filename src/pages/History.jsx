@@ -28,7 +28,7 @@ const History = () => {
         ) : (
           history.map((entry, index) => (
             <Text key={index}>
-              Container {entry.container} Count: {entry.count} at {new Date(entry.timestamp).toLocaleTimeString()}
+              Custom Container {entry.container} Custom Count: {entry.count} at {new Date(entry.timestamp).toLocaleTimeString()}
             </Text>
           ))
         )}
