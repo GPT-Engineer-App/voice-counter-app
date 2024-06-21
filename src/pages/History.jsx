@@ -19,7 +19,7 @@ const History = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4" role="main">
+    <div className="container mx-auto py-8 px-4">
       <h2 className="text-2xl font-bold mb-4">History</h2>
       <HistoryList history={history} />
       <ExportButton onClick={exportData} />
