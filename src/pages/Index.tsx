@@ -18,7 +18,7 @@ const Index = React.memo(() => {
   const [history, setHistory] = useState(loadFromLocalStorage("history", []));
   const [filter, setFilter] = useState("all");
   const [lockedContainers, setLockedContainers] = useState({ containerA: false, containerB: false, containerC: false, containerD: false, containerE: false });
-  const [customKeywords, setCustomKeywords] = useState(loadFromLocalStorage("customKeywords", { containerA: "containera", containerB: "containerb", containerC: "containerc", containerD: "containerd", containerE: "containere" }));
+  const [customKeywords, setCustomKeywords] = useState(loadFromLocalStorage("customKeywords", { containerA: "CAN", containerB: "GLASS", containerC: "CART", containerD: "PET", containerE: "HDP" }));
   const { transcript, resetTranscript, finalTranscript, listening } = useSpeechRecognition();
 
   const confidenceThreshold = 0.8;
