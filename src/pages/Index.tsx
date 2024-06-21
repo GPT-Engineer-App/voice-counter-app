@@ -7,6 +7,7 @@ const Index = React.memo(() => {
   const [history, setHistory] = useState([]);
   const [filter, setFilter] = useState("all");
   const [lockedContainers, setLockedContainers] = useState({ containerA: false, containerB: false, containerC: false, containerD: false, containerE: false });
+  const [customKeywords, setCustomKeywords] = useState({ containerA: "containera", containerB: "containerb", containerC: "containerc", containerD: "containerd", containerE: "containere" });
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [feedback, setFeedback] = useState("");
   const [feedbackError, setFeedbackError] = useState("");
@@ -16,19 +17,19 @@ const Index = React.memo(() => {
     let newCounts = { ...counts };
 
     words.forEach((word) => {
-      if (word.toLowerCase() === "containera" && !lockedContainers.containerA) {
+      if (word.toLowerCase() === customKeywords.containerA.toLowerCase() && !lockedContainers.containerA) {
         newCounts.containerA += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "A", count: newCounts.containerA, timestamp: new Date() }]);
-      } else if (word.toLowerCase() === "containerb" && !lockedContainers.containerB) {
+      } else if (word.toLowerCase() === customKeywords.containerB.toLowerCase() && !lockedContainers.containerB) {
         newCounts.containerB += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "B", count: newCounts.containerB, timestamp: new Date() }]);
-      } else if (word.toLowerCase() === "containerc" && !lockedContainers.containerC) {
+      } else if (word.toLowerCase() === customKeywords.containerC.toLowerCase() && !lockedContainers.containerC) {
         newCounts.containerC += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "C", count: newCounts.containerC, timestamp: new Date() }]);
-      } else if (word.toLowerCase() === "containerd" && !lockedContainers.containerD) {
+      } else if (word.toLowerCase() === customKeywords.containerD.toLowerCase() && !lockedContainers.containerD) {
         newCounts.containerD += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "D", count: newCounts.containerD, timestamp: new Date() }]);
-      } else if (word.toLowerCase() === "containere" && !lockedContainers.containerE) {
+      } else if (word.toLowerCase() === customKeywords.containerE.toLowerCase() && !lockedContainers.containerE) {
         newCounts.containerE += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "E", count: newCounts.containerE, timestamp: new Date() }]);
       }
@@ -36,7 +37,7 @@ const Index = React.memo(() => {
 
     setCounts(newCounts);
     resetTranscript();
-  }, [transcript, lockedContainers]);
+  }, [transcript, lockedContainers, customKeywords]);
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return <span>Browser doesn't support speech recognition.</span>;
@@ -98,6 +99,13 @@ const Index = React.memo(() => {
     }));
   };
 
+  const handleKeywordChange = (container, keyword) => {
+    setCustomKeywords((prevKeywords) => ({
+      ...prevKeywords,
+      [container]: keyword,
+    }));
+  };
+
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" role="main">
       <VStack spacing={4}>
@@ -147,6 +155,29 @@ const Index = React.memo(() => {
           <Checkbox isChecked={lockedContainers.containerC} onChange={() => toggleLock("containerC")}>Lock Container C</Checkbox>
           <Checkbox isChecked={lockedContainers.containerD} onChange={() => toggleLock("containerD")}>Lock Container D</Checkbox>
           <Checkbox isChecked={lockedContainers.containerE} onChange={() => toggleLock("containerE")}>Lock Container E</Checkbox>
+        </Box>
+        <Box>
+          <Text fontSize="xl">Custom Keywords</Text>
+          <FormControl>
+            <FormLabel htmlFor="keywordA">Keyword for Container A</FormLabel>
+            <Input id="keywordA" value={customKeywords.containerA} onChange={(e) => handleKeywordChange("containerA", e.target.value)} />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="keywordB">Keyword for Container B</FormLabel>
+            <Input id="keywordB" value={customKeywords.containerB} onChange={(e) => handleKeywordChange("containerB", e.target.value)} />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="keywordC">Keyword for Container C</FormLabel>
+            <Input id="keywordC" value={customKeywords.containerC} onChange={(e) => handleKeywordChange("containerC", e.target.value)} />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="keywordD">Keyword for Container D</FormLabel>
+            <Input id="keywordD" value={customKeywords.containerD} onChange={(e) => handleKeywordChange("containerD", e.target.value)} />
+          </FormControl>
+          <FormControl>
+            <FormLabel htmlFor="keywordE">Keyword for Container E</FormLabel>
+            <Input id="keywordE" value={customKeywords.containerE} onChange={(e) => handleKeywordChange("containerE", e.target.value)} />
+          </FormControl>
         </Box>
       </VStack>
     </Container>
