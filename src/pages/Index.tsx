@@ -56,7 +56,7 @@ const CountDisplay = ({ customKeywords, counts }) => (
 );
 
 const HistoryDisplay = ({ filteredHistory }) => (
-  <div aria-live="polite" className="w-full px-4">
+  <div className="w-full px-4">
     <p className="text-xl">History</p>
     {filteredHistory.map((entry, index) => (
       <p key={index}>

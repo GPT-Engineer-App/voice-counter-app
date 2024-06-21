@@ -80,7 +80,7 @@ const LockScreen = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-center items-center bg-gray-800 text-white px-4">
+    <div className="h-screen flex flex-col justify-center items-center bg-gray-800 text-white px-4" role="none">
       <div className="space-y-4">
         <p className="text-2xl">Lock Screen Display</p>
         <CountDisplay counts={counts} />
