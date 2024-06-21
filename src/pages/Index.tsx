@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Container, Text, VStack, Button, Box, HStack, Select, Input, FormControl, FormLabel, FormErrorMessage, Textarea, Checkbox } from "@chakra-ui/react";
+import { Container, Text, VStack, Button, Box, HStack, Select, Input, FormControl, FormLabel, FormErrorMessage, Textarea, Checkbox, useToast } from "@chakra-ui/react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 const Index = React.memo(() => {
+  const toast = useToast();
   const [counts, setCounts] = useState({ containerA: 0, containerB: 0, containerC: 0, containerD: 0, containerE: 0 });
   const [history, setHistory] = useState([]);
   const [filter, setFilter] = useState("all");
@@ -20,31 +21,85 @@ const Index = React.memo(() => {
       if (word.toLowerCase() === customKeywords.containerA.toLowerCase() && !lockedContainers.containerA) {
         newCounts.containerA += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "A", count: newCounts.containerA, timestamp: new Date() }]);
+        toast({
+          title: "Word Recognized",
+          description: `Container A recognized the word: ${customKeywords.containerA}`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else if (word.toLowerCase() === customKeywords.containerB.toLowerCase() && !lockedContainers.containerB) {
         newCounts.containerB += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "B", count: newCounts.containerB, timestamp: new Date() }]);
+        toast({
+          title: "Word Recognized",
+          description: `Container B recognized the word: ${customKeywords.containerB}`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else if (word.toLowerCase() === customKeywords.containerC.toLowerCase() && !lockedContainers.containerC) {
         newCounts.containerC += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "C", count: newCounts.containerC, timestamp: new Date() }]);
+        toast({
+          title: "Word Recognized",
+          description: `Container C recognized the word: ${customKeywords.containerC}`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else if (word.toLowerCase() === customKeywords.containerD.toLowerCase() && !lockedContainers.containerD) {
         newCounts.containerD += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "D", count: newCounts.containerD, timestamp: new Date() }]);
+        toast({
+          title: "Word Recognized",
+          description: `Container D recognized the word: ${customKeywords.containerD}`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else if (word.toLowerCase() === customKeywords.containerE.toLowerCase() && !lockedContainers.containerE) {
         newCounts.containerE += 1;
         setHistory((prevHistory) => [...prevHistory, { container: "E", count: newCounts.containerE, timestamp: new Date() }]);
+        toast({
+          title: "Word Recognized",
+          description: `Container E recognized the word: ${customKeywords.containerE}`,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       }
     });
 
     setCounts(newCounts);
     resetTranscript();
-  }, [transcript, lockedContainers, customKeywords]);
+  }, [transcript, lockedContainers, customKeywords, toast]);
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
 
-  const startListening = () => SpeechRecognition.startListening({ continuous: true });
-  const stopListening = () => SpeechRecognition.stopListening();
+  const startListening = () => {
+    SpeechRecognition.startListening({ continuous: true });
+    toast({
+      title: "Listening Started",
+      description: "The application is now listening for keywords.",
+      status: "info",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
+  const stopListening = () => {
+    SpeechRecognition.stopListening();
+    toast({
+      title: "Listening Stopped",
+      description: "The application has stopped listening for keywords.",
+      status: "info",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   const fetchData = async () => {
     try {
