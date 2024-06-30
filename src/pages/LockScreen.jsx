@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import debounce from 'lodash.debounce';
+import * as utils from "../utils";
+import * as actions from "../actions";
+import * as reducers from "../reducers";
 
 const customKeywords = {
   containerA: "CAN",

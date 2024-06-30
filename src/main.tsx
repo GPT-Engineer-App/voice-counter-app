@@ -3,6 +3,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";  // Global CSS styles including Tailwind CSS
+import * as utils from "../utils";
+import * as actions from "../actions";
+import * as reducers from "../reducers";
 
 const Root = () => {
   return (

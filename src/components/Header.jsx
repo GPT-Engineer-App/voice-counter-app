@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
 import ThemeSwitcher from "./ThemeSwitcher";
+import React from "react";
+import * as utils from "../utils";
+import * as actions from "../actions";
+import * as reducers from "../reducers";
 
 const Header = () => {
   return (

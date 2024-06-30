@@ -1,3 +1,8 @@
+import React from "react";
+import * as utils from "../utils";
+import * as actions from "../actions";
+import * as reducers from "../reducers";
+
 const Footer = () => {
   return (
     <footer className="bg-white shadow p-4 mt-auto">

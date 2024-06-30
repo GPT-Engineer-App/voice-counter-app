@@ -1,14 +1,21 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import * as utils from "../utils";
+import * as actions from "../actions";
+import * as reducers from "../reducers";
 
 const History = () => {
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const storedHistory = JSON.parse(localStorage.getItem("history")) || [];
     setHistory(storedHistory);
   }, []);
 
   const exportData = () => {
+    // Example usage of imported modules
+    utils.someUtilityFunction();
+    actions.someAction();
+    reducers.someReducer();
     const dataStr = JSON.stringify(history, null, 2);
     const blob = new Blob([dataStr], { type: "application/json" });
     const url = URL.createObjectURL(blob);
